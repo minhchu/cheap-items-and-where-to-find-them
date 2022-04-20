@@ -99,9 +99,9 @@ export const App = () => {
       <Container maxW="700px">
         <ColorModeSwitcher justifySelf="flex-end" />
         <form onSubmit={onSubmit}>
-          <Input placeholder="item name" mb={2} />
-          <Input placeholder="price" type="number" mb={2} />
-          <Input placeholder="store address" mb={2} />
+          <Input required placeholder="item name" mb={2} />
+          <Input required placeholder="price" type="number" mb={2} />
+          <Input required placeholder="store address" mb={2} />
           <Button colorScheme="blue" type="submit">
             Save
           </Button>
