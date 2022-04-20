@@ -1,8 +1,8 @@
 import {
   ChakraProvider,
-  Box,
   theme,
   Input,
+  IconButton,
   Button,
   Table,
   Thead,
@@ -17,6 +17,7 @@ import {
 import { useLiveQuery } from "dexie-react-hooks";
 import { useState } from "react";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
+import { FiTrash2 } from "react-icons/fi";
 import { db } from "./db";
 
 const formatter = new Intl.NumberFormat("vi-VN", {
@@ -35,37 +36,50 @@ const List = () => {
     return await db.items.toArray();
   }, [name]);
 
+  const deleteItem = (id: number) => {
+    db.items.where("id").equals(id).delete();
+  };
+
   return (
-    <TableContainer>
-      <Box mt={2} p={0.5}>
-        <Input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Search ..."
-        />
-      </Box>
-      <Table variant="striped" colorScheme="teal">
-        <TableCaption placement="top">Items list</TableCaption>
-        <Thead>
-          <Tr>
-            <Th>ID</Th>
-            <Th>Name</Th>
-            <Th isNumeric>Price</Th>
-            <Th>Store address</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {items?.map((item) => (
-            <Tr key={item.id}>
-              <Td>{item.id}</Td>
-              <Td>{item.name}</Td>
-              <Td isNumeric>{formatter.format(item.price)}</Td>
-              <Td>{item.store_address}</Td>
+    <>
+      <Input
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Search ..."
+        mt={4}
+      />
+      <TableContainer>
+        <Table variant="striped" colorScheme="teal">
+          <TableCaption placement="top">Items list</TableCaption>
+          <Thead>
+            <Tr>
+              <Th>ID</Th>
+              <Th>Name</Th>
+              <Th isNumeric>Price</Th>
+              <Th>Store address</Th>
+              <Th></Th>
             </Tr>
-          ))}
-        </Tbody>
-      </Table>
-    </TableContainer>
+          </Thead>
+          <Tbody>
+            {items?.map((item) => (
+              <Tr key={item.id}>
+                <Td>{item.id}</Td>
+                <Td>{item.name}</Td>
+                <Td isNumeric>{formatter.format(item.price)}</Td>
+                <Td>{item.store_address}</Td>
+                <Td>
+                  <IconButton
+                    icon={<FiTrash2 />}
+                    aria-label="delete"
+                    onClick={() => deleteItem(item.id!)}
+                  />
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </TableContainer>
+    </>
   );
 };
 
@@ -82,7 +96,7 @@ export const App = () => {
 
   return (
     <ChakraProvider theme={theme}>
-      <Container>
+      <Container maxW="700px">
         <ColorModeSwitcher justifySelf="flex-end" />
         <form onSubmit={onSubmit}>
           <Input placeholder="item name" mb={2} />
