@@ -13,6 +13,7 @@ import {
   TableCaption,
   TableContainer,
   Container,
+  Heading,
 } from "@chakra-ui/react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { useState } from "react";
@@ -97,7 +98,10 @@ export const App = () => {
   return (
     <ChakraProvider theme={theme}>
       <Container maxW="700px">
-        <ColorModeSwitcher justifySelf="flex-end" />
+        <Heading textAlign={"center"} mt={4}>
+          Cheap items and where to find them
+        </Heading>
+        <ColorModeSwitcher justifySelf="flex-end" mt={2} />
         <form onSubmit={onSubmit}>
           <Input required placeholder="item name" mb={2} />
           <Input required placeholder="price" type="number" mb={2} />
